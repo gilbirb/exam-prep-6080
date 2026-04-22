@@ -13,6 +13,7 @@ function App() {
       [random(), random(), random(), random(), random(), random()]
     ]
   );
+  const [win, setWin] = useState(false);
 
   const resetCallback = () => {
     setGrid([
@@ -22,6 +23,7 @@ function App() {
       [random(), random(), random(), random(), random(), random()],
       [random(), random(), random(), random(), random(), random()]
     ]);
+    setWin(false);
   };
 
   const play = (x: number, y: number) => {
@@ -35,10 +37,18 @@ function App() {
       newGrid[adj[0]][adj[1]] = !val;
     }
     setGrid(newGrid);
+
+    if (checkWin()) {
+      setWin(true);
+    }
   };
 
   const outOfBounds = (x: number, y: number) => {
     return x < 0 || x > 4 || y < 0 || y > 4;
+  };
+
+  const checkWin = () => {
+    return grid.every(row => row.every(box => box));
   };
 
   return (
@@ -46,14 +56,17 @@ function App() {
       {grid.map((box, idx) => {
         return (
           <div key={idx} className="flex">
-            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[0] ? "bg-green-700" : ""}`} onClick={() => play(idx, 0)}></div>
-            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[1] ? "bg-green-700" : ""}`} onClick={() => play(idx, 1)}></div>
-            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[2] ? "bg-green-700" : ""}`} onClick={() => play(idx, 2)}></div>
-            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[3] ? "bg-green-700" : ""}`} onClick={() => play(idx, 3)}></div>
-            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[4] ? "bg-green-700" : ""}`} onClick={() => play(idx, 4)}></div>
+            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[0] ? "bg-orange-400" : ""}`} onClick={() => play(idx, 0)}></div>
+            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[1] ? "bg-orange-400" : ""}`} onClick={() => play(idx, 1)}></div>
+            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[2] ? "bg-orange-400" : ""}`} onClick={() => play(idx, 2)}></div>
+            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[3] ? "bg-orange-400" : ""}`} onClick={() => play(idx, 3)}></div>
+            <div className={`cursor-pointer w-30 h-30 border-black border-2 inline-flex justify-center items-center ${box[4] ? "bg-orange-400" : ""}`} onClick={() => play(idx, 4)}></div>
           </div>
         )
       })}
+      {win && (
+        <p>You won!</p>
+      )}
       <button className="my-5 cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg" onClick={resetCallback}>Reset</button>
     </div>
   )
