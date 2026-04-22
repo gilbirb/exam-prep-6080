@@ -6,27 +6,30 @@ function App() {
 
   const [grid, setGrid] = useState(
     [
-      [random(), random(), random(), random(), random(), random()],
-      [random(), random(), random(), random(), random(), random()],
-      [random(), random(), random(), random(), random(), random()],
-      [random(), random(), random(), random(), random(), random()],
-      [random(), random(), random(), random(), random(), random()]
+      [random(), random(), random(), random(), random()],
+      [random(), random(), random(), random(), random()],
+      [random(), random(), random(), random(), random()],
+      [random(), random(), random(), random(), random()],
+      [random(), random(), random(), random(), random()]
     ]
   );
   const [win, setWin] = useState(false);
+  const [moves, setMoves] = useState(0);
 
   const resetCallback = () => {
     setGrid([
-      [random(), random(), random(), random(), random(), random()],
-      [random(), random(), random(), random(), random(), random()],
-      [random(), random(), random(), random(), random(), random()],
-      [random(), random(), random(), random(), random(), random()],
-      [random(), random(), random(), random(), random(), random()]
+      [random(), random(), random(), random(), random()],
+      [random(), random(), random(), random(), random()],
+      [random(), random(), random(), random(), random()],
+      [random(), random(), random(), random(), random()],
+      [random(), random(), random(), random(), random()]
     ]);
     setWin(false);
+    setMoves(0);
   };
 
   const play = (x: number, y: number) => {
+    if (win) return;
     const newGrid = [...grid];
     const adjacentBoxes = [[x + 1, y], [x, y + 1], [x - 1, y], [x, y - 1]];
     newGrid[x][y] = !newGrid[x][y];
@@ -37,6 +40,7 @@ function App() {
       newGrid[adj[0]][adj[1]] = !val;
     }
     setGrid(newGrid);
+    setMoves(moves + 1);
 
     if (checkWin()) {
       setWin(true);
@@ -67,6 +71,7 @@ function App() {
       {win && (
         <p>You won!</p>
       )}
+      <p>Total moves: {moves}</p>
       <button className="my-5 cursor-pointer bg-blue-500 text-white px-4 py-2 rounded-lg" onClick={resetCallback}>Reset</button>
     </div>
   )
